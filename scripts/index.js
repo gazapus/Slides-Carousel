@@ -1,12 +1,14 @@
 let carouselInnerContainer = document.getElementsByClassName("carouselContainer__space")[0];
 
 let widthState = 100;
+let currentPosition = 1;
 
 const log = console.log;
 
 window.onload = () => {
     resizeWidth();
-    duplicateExtremeSlides();
+    duplicateSlides();
+    hideFirstSlide();
     addListenerToButtons();
 }
 
@@ -16,25 +18,33 @@ window.onresize = () => {
 
 function resizeWidth() {
     let width = window.innerWidth;
-    let finalWidth = 100; 
-    if(width > 1200) {
+    let finalWidth = 100;
+    if (width > 1200) {
         finalWidth = 65;
-    } else if(width > 800 && width < 1200) {
+    } else if (width > 800 && width < 1200) {
         finalWidth = -0.0875 * width + 170;
     }
     document.documentElement.style.setProperty('--carousel-width', finalWidth + 'vw');
     widthState = finalWidth;
 }
 
-function duplicateExtremeSlides() {
-    let firstSlide = carouselInnerContainer.children[0];
-    let lastSlide = carouselInnerContainer.children[carouselInnerContainer.children.length - 1];
-    carouselInnerContainer.insertBefore(lastSlide.cloneNode(true), firstSlide);
-    carouselInnerContainer.insertBefore(firstSlide.cloneNode(true), lastSlide.nextSibling);
+function duplicateSlides() {
+    let slides = carouselInnerContainer.children;
+    let totalSlides = slides.length;
+    for (let i = 0; i < totalSlides - 1; i++) { 
+        carouselInnerContainer.insertBefore(slides[i].cloneNode(true), slides[slides.length - 1].nextSibling);
+    }
+    carouselInnerContainer.insertBefore(slides[totalSlides - 1].cloneNode(true), slides[0]);
+}
+
+function hideFirstSlide() {
+    let slides = document.getElementsByClassName("carousel");
+    Array.prototype.map.call(slides, (slide) => {
+        slide.style.transform = `translate(-${widthState}vw)`;
+    })
 }
 
 function addListenerToButtons() {
-    log("addListenerToButtons")
     let buttons = document.getElementsByClassName("boton_siguiente");
     Array.prototype.map.call(buttons, (button) => {
         button.addEventListener('click', moveToNext);
@@ -42,16 +52,17 @@ function addListenerToButtons() {
 }
 
 function moveToNext() {
-    log("movetonext")
     let slides = document.getElementsByClassName("carousel");
-    Array.prototype.map.call(slides, (slide, index) => {
-        slide.classList.add('container-toLeft');
+    currentPosition++;
+    var firstSlideDeleted = false;
+    Array.prototype.map.call(slides, (slide) => {
+        slide.style.transform = `translate(-${widthState * currentPosition}vw)`;
         slide.addEventListener('transitionend', () => {
-            slide.classList.remove('container-toLeft');
-            if(index === 0) {
-                updateExtremes();
+            if(!firstSlideDeleted) {
+                firstSlideDeleted = true;
+                log("ppe");
             }
-        });
+        })
     })
 }
 
@@ -62,6 +73,8 @@ function updateExtremes() {
     carouselInnerContainer.removeChild(firstSlide);
     addListenerToButtons();
 }
+
+
 
 /*
     contenedor

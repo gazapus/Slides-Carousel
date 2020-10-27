@@ -32,6 +32,8 @@ body {
     width: 100%;
     min-width: 360px;
     flex-shrink: 0;
+    transition-property: all;
+    transition-duration: 2s;
 }
 
 .carousel_image {
