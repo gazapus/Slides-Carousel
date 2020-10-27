@@ -1,0 +1,108 @@
+:root {
+    --carousel-width: 100vw;
+}
+
+body {
+    margin: 0;
+}
+
+.carouselContainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    border-width: 2px 0 2px 0;
+    border-style: solid;
+    border-color: rgba(76, 0, 130, 0.849);
+    background-color: rgba(12, 12, 12, 0.295);
+    box-sizing: border-box;
+}
+
+.carouselContainer__space {
+    width: var(--carousel-width);
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: row;
+}
+
+.carousel {
+    display: flex;
+    flex-direction: row;
+    min-height: 180px;
+    height: 40vh;
+    width: 100%;
+    min-width: 360px;
+    flex-shrink: 0;
+}
+
+.carousel_image {
+    width: 60%;
+    background-image: url("https://www.elmundodelgato.com/wp-content/uploads/2020/10/cat-3870882_960_720-780x420.jpg");
+    background-repeat: repeat-x;
+    background-size: cover;
+}
+
+.carousel__descriptionContainer {
+    width: 40%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    height: 100%;
+    overflow-y: hidden;
+}
+
+.carousel__title {
+    flex-grow: 1;
+    background-color: white;
+    margin: 0;
+    padding: 1vw;
+    font-size: 1.8em;
+    font-family: 'Raleway', sans-serif;
+}
+
+.carousel__description {
+    flex-grow: 1;
+    background-color: white;
+    margin: 0;
+    padding: 1.5vw;
+    font-size: 1.1em;
+    overflow-y: hidden;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+}
+
+.carousel__options {
+    flex-grow: 1;
+    background-color: rgb(255, 255, 255);
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 1vw;
+}
+
+@media (orientation: portrait) {
+    .carousel {
+        height: 35vh;
+    }
+    .carousel_image {
+        width: 50%;
+    }
+    .carousel__descriptionContainer {
+        width: 50%;
+    }
+    .carousel__title {
+        font-size: 1.5em;
+    }
+    .carousel__description {
+        font-size: 1.1em;
+    }
+}
+
+.container-toLeft {
+    transform: translate(calc(-1 * var(--carousel-width)));
+    transition-property: all;
+    transition-duration: 2s;
+}
