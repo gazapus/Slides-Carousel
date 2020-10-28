@@ -3,26 +3,20 @@ let carouselInnerContainer = document.getElementsByClassName("carouselContainer_
 let widthState = 100;
 let ORIGINALS_SLIDES;
 
-const log = console.log;
-
 window.onload = () => {
-    ORIGINALS_SLIDES = carouselInnerContainer.children;
+    ORIGINALS_SLIDES = carouselInnerContainer.innerHTML;
     resizeWidth();
     duplicateSlides();
     hideFirstSlide();
     addListenerToButtons();
 }
 
-window.onresize = () => {/*
+window.onresize = () => {
     carouselInnerContainer.innerHTML = ORIGINALS_SLIDES;
     resizeWidth();
     duplicateSlides();
     hideFirstSlide();
-    addListenerToButtons();*/
-}
-
-function restart() {
-
+    addListenerToButtons();
 }
 
 function resizeWidth() {
@@ -65,7 +59,6 @@ function addListenerToButtons() {
     })
 }
 
-// * * ** * * * * * * ** * * * * * ** * *  ** * * * * * * * * * ** * ******
 function moveToNext() {
     animate();
     changeDisabledState();
@@ -74,12 +67,10 @@ function moveToNext() {
         slide.style.transform = `translate(-${widthState * 2}vw)`;
     });
     slides[0].addEventListener('transitionend', () => {
-       sortSlides(updateNextExtremes);
-       changeDisabledState();
-
+        sortSlides(updateNextExtremes);
+        changeDisabledState();
     })
 }
-// * * ** * * * * * * ** * * * * * ** * *  ** * * * * * * * * * ** * ********
 
 function moveToPrevius() {
     animate();
@@ -123,7 +114,7 @@ function changeDisabledState() {
     let buttonsNext = document.getElementsByClassName("boton_siguiente");
     let buttonsPrevius = document.getElementsByClassName("boton_anterior");
     let buttons = Array.from(buttonsNext).concat(Array.from(buttonsPrevius));
-    for(let button of buttons) {
+    for (let button of buttons) {
         button.disabled = !button.disabled;
     }
 }
