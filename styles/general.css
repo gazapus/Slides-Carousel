@@ -2,7 +2,6 @@
     --carousel-width: 100vw;
     --color-main: rgb(162, 26, 252);
     --color-main-hover: rgb(118, 0, 197);
-
 }
 
 body {
@@ -31,7 +30,7 @@ body {
     display: flex;
     flex-direction: row;
     min-height: 180px;
-    height: 40vh;
+    height: 50vh;
     width: 100%;
     flex-shrink: 0;
 }
@@ -95,6 +94,9 @@ body {
     padding: 0.8vw 1vw 0.8vw 1vw;
     color: white;
     height: 2.3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .options__button {
@@ -114,6 +116,10 @@ body {
     background-color: var(--color-main-hover);
     transition: 0.5s;
 }
+
+.options__button:active, .options__readMore:active {
+    outline: none;
+} 
 
 @media (orientation: portrait) {
     .carousel {

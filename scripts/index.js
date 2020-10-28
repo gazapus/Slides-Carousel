@@ -23,9 +23,9 @@ function resizeWidth() {
     let width = window.innerWidth;
     let finalWidth = 100;
     if (width > 1200) {
-        finalWidth = 65;
+        finalWidth = 70;
     } else if (width > 800 && width < 1200) {
-        finalWidth = -0.0875 * width + 170;
+        finalWidth = -0.075 * width + 160;
     }
     document.documentElement.style.setProperty('--carousel-width', finalWidth + 'vw');
     widthState = finalWidth;
