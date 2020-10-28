@@ -31,9 +31,7 @@ body {
     height: 40vh;
     width: 100%;
     min-width: 360px;
-    flex-shrink: 0;
-    transition-property: all;
-    transition-duration: 2s;
+    flex-shrink: 0;    
 }
 
 .carousel_image {
@@ -101,10 +99,4 @@ body {
     .carousel__description {
         font-size: 1.1em;
     }
-}
-
-.container-toLeft {
-    transform: translate(calc(-1 * var(--carousel-width)));
-    transition-property: all;
-    transition-duration: 2s;
 }

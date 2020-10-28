@@ -1,7 +1,6 @@
 let carouselInnerContainer = document.getElementsByClassName("carouselContainer__space")[0];
 
 let widthState = 100;
-let currentPosition = 1;
 
 const log = console.log;
 
@@ -31,13 +30,14 @@ function resizeWidth() {
 function duplicateSlides() {
     let slides = carouselInnerContainer.children;
     let totalSlides = slides.length;
-    for (let i = 0; i < totalSlides - 1; i++) { 
+    for (let i = 0; i < totalSlides - 1; i++) {
         carouselInnerContainer.insertBefore(slides[i].cloneNode(true), slides[slides.length - 1].nextSibling);
     }
     carouselInnerContainer.insertBefore(slides[totalSlides - 1].cloneNode(true), slides[0]);
 }
 
 function hideFirstSlide() {
+    desanimate();
     let slides = document.getElementsByClassName("carousel");
     Array.prototype.map.call(slides, (slide) => {
         slide.style.transform = `translate(-${widthState}vw)`;
@@ -49,40 +49,84 @@ function addListenerToButtons() {
     Array.prototype.map.call(buttons, (button) => {
         button.addEventListener('click', moveToNext);
     })
-}
-
-function moveToNext() {
-    let slides = document.getElementsByClassName("carousel");
-    currentPosition++;
-    var firstSlideDeleted = false;
-    Array.prototype.map.call(slides, (slide) => {
-        slide.style.transform = `translate(-${widthState * currentPosition}vw)`;
-        slide.addEventListener('transitionend', () => {
-            if(!firstSlideDeleted) {
-                firstSlideDeleted = true;
-                log("ppe");
-            }
-        })
+    let buttonsPrevius = document.getElementsByClassName("boton_anterior");
+    Array.prototype.map.call(buttonsPrevius, (button) => {
+        button.addEventListener('click', moveToPrevius);
     })
 }
 
-function updateExtremes() {
-    let firstSlide = carouselInnerContainer.children[0];
-    let lastSlide = carouselInnerContainer.children[carouselInnerContainer.children.length - 1];
+// * * ** * * * * * * ** * * * * * ** * *  ** * * * * * * * * * ** * ******
+function moveToNext() {
+    animate();
+    let slides = document.getElementsByClassName("carousel");
+    Array.prototype.map.call(slides, (slide) => {
+        slide.style.transform = `translate(-${widthState * 2}vw)`;
+    });
+    slides[0].addEventListener('transitionend', () => {
+        desanimate();
+        updateNextExtremes();
+        let slides2 = document.getElementsByClassName("carousel");
+        Array.prototype.map.call(slides2, (slide) => {
+            slide.style.transform = `translate(-${widthState}vw)`;
+        });
+    })
+}
+// * * ** * * * * * * ** * * * * * ** * *  ** * * * * * * * * * ** * ********
+
+function moveToPrevius() {
+    animate();
+    let slides = document.getElementsByClassName("carousel");
+    Array.prototype.map.call(slides, (slide) => {
+        slide.style.transform = `translate(${0}vw)`;
+    });
+    slides[slides.length - 1].addEventListener('transitionend', () => {
+        desanimate();
+        updateExtremePrevius();
+        let slides2 = document.getElementsByClassName("carousel");
+        Array.prototype.map.call(slides2, (slide) => {
+            slide.style.transform = `translate(-${widthState}vw)`;
+        });
+    })
+}
+
+function reagrupar() {
+    desanimate();
+    updateExtremes();
+    let slides = document.getElementsByClassName("carousel");
+    Array.prototype.map.call(slides, (slide) => {
+        slide.style.transform = `translate(-${widthState}vw)`;
+    });
+    //slides[0].removeEventListener('transitionend', reagrupar)
+}
+
+
+function updateNextExtremes() {
+    let slides = carouselInnerContainer.children;
+    let firstSlide = slides[0];
+    let lastSlide = slides[slides.length - 1];
     carouselInnerContainer.insertBefore(firstSlide.cloneNode(true), lastSlide.nextSibling);
     carouselInnerContainer.removeChild(firstSlide);
     addListenerToButtons();
 }
 
+function updateExtremePrevius() {
+    let slides = carouselInnerContainer.children;
+    carouselInnerContainer.insertBefore(slides[slides.length - 1].cloneNode(true), slides[0]);
+    carouselInnerContainer.removeChild(slides[slides.length - 1]);
+    addListenerToButtons();
+}
 
+function animate() {
+    let slides = document.getElementsByClassName("carousel");
+    return Array.prototype.map.call(slides, (slide) => {
+        slide.style.transitionProperty = 'all';
+        slide.style.transitionDuration = '2s';
+    });
+}
 
-/*
-    contenedor
-        +slide3
-        slide1  <-- #start
-        slide2
-        slide3
-        +slide1
-    /contenedor
-
-*/
+function desanimate() {
+    let slides = document.getElementsByClassName("carousel");
+    return Array.prototype.map.call(slides, (slide) => {
+        slide.style.transitionDuration = '0s';
+    });
+}
