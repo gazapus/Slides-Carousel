@@ -1,18 +1,28 @@
 let carouselInnerContainer = document.getElementsByClassName("carouselContainer__space")[0];
 
 let widthState = 100;
+let ORIGINALS_SLIDES;
 
 const log = console.log;
 
 window.onload = () => {
+    ORIGINALS_SLIDES = carouselInnerContainer.children;
     resizeWidth();
     duplicateSlides();
     hideFirstSlide();
     addListenerToButtons();
 }
 
-window.onresize = () => {
+window.onresize = () => {/*
+    carouselInnerContainer.innerHTML = ORIGINALS_SLIDES;
     resizeWidth();
+    duplicateSlides();
+    hideFirstSlide();
+    addListenerToButtons();*/
+}
+
+function restart() {
+
 }
 
 function resizeWidth() {
@@ -58,47 +68,40 @@ function addListenerToButtons() {
 // * * ** * * * * * * ** * * * * * ** * *  ** * * * * * * * * * ** * ******
 function moveToNext() {
     animate();
+    changeDisabledState();
     let slides = document.getElementsByClassName("carousel");
     Array.prototype.map.call(slides, (slide) => {
         slide.style.transform = `translate(-${widthState * 2}vw)`;
     });
     slides[0].addEventListener('transitionend', () => {
-        desanimate();
-        updateNextExtremes();
-        let slides2 = document.getElementsByClassName("carousel");
-        Array.prototype.map.call(slides2, (slide) => {
-            slide.style.transform = `translate(-${widthState}vw)`;
-        });
+       sortSlides(updateNextExtremes);
+       changeDisabledState();
+
     })
 }
 // * * ** * * * * * * ** * * * * * ** * *  ** * * * * * * * * * ** * ********
 
 function moveToPrevius() {
     animate();
+    changeDisabledState();
     let slides = document.getElementsByClassName("carousel");
     Array.prototype.map.call(slides, (slide) => {
         slide.style.transform = `translate(${0}vw)`;
     });
     slides[slides.length - 1].addEventListener('transitionend', () => {
-        desanimate();
-        updateExtremePrevius();
-        let slides2 = document.getElementsByClassName("carousel");
-        Array.prototype.map.call(slides2, (slide) => {
-            slide.style.transform = `translate(-${widthState}vw)`;
-        });
+        sortSlides(updateExtremePrevius);
+        changeDisabledState();
     })
 }
 
-function reagrupar() {
+function sortSlides(updateExtremes) {
     desanimate();
     updateExtremes();
-    let slides = document.getElementsByClassName("carousel");
-    Array.prototype.map.call(slides, (slide) => {
+    let slides2 = document.getElementsByClassName("carousel");
+    Array.prototype.map.call(slides2, (slide) => {
         slide.style.transform = `translate(-${widthState}vw)`;
     });
-    //slides[0].removeEventListener('transitionend', reagrupar)
 }
-
 
 function updateNextExtremes() {
     let slides = carouselInnerContainer.children;
@@ -114,6 +117,15 @@ function updateExtremePrevius() {
     carouselInnerContainer.insertBefore(slides[slides.length - 1].cloneNode(true), slides[0]);
     carouselInnerContainer.removeChild(slides[slides.length - 1]);
     addListenerToButtons();
+}
+
+function changeDisabledState() {
+    let buttonsNext = document.getElementsByClassName("boton_siguiente");
+    let buttonsPrevius = document.getElementsByClassName("boton_anterior");
+    let buttons = Array.from(buttonsNext).concat(Array.from(buttonsPrevius));
+    for(let button of buttons) {
+        button.disabled = !button.disabled;
+    }
 }
 
 function animate() {
